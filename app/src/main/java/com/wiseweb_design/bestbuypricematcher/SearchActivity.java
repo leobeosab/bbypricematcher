@@ -138,7 +138,7 @@ public class SearchActivity extends ActionBarActivity
         {
             if (bbyInf != null)
             {
-                amazon = search.searchAmazon(search.jSoupDoc, bbyInf.get("modelNumber"),bbyInf);
+                amazon = search.searchAmazon(search.jSoupDoc, bbyInf.get("upc"),bbyInf);
             }
             else
             {
@@ -153,11 +153,11 @@ public class SearchActivity extends ActionBarActivity
             // Set title into TextView
             if (amazon.size() >= 1)
             {
-                amazonView.setText("Price Match Available:\nYes\nPrice:\n"+amazon.get(0));
+                amazonView.setText("Price Match Available:\nYes\nPrice: "+amazon.get(0));
             }
             else
             {
-                amazonView.setText("Price Match Available:\nNo\nPrice:\n N/a");
+                amazonView.setText("Price Match Available:\nNo\nPrice: "+amazon.get(0));
             }
             Toast.makeText(getBaseContext(), "Amazon, done", Toast.LENGTH_LONG).show();
         }

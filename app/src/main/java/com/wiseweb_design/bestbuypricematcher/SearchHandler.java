@@ -42,6 +42,22 @@ public class SearchHandler
         matchingItems.put("price", doc.select(".medium-item-price").text());
         matchingItems.put("modelNumber", doc.select(".list-item-info .sku-model ul .model-number").text());
         matchingItems.put("title", doc.select(".list-item-info .sku-title h4 a").text());
+
+
+
+        String newURL = "http://bestbuy.com" + bestBuySpecsFormatter(doc.select(".list-item-info .sku-title h4 a").attr("href"));
+        System.out.println(newURL);
+        doc = jsoupConnect(newURL);
+        Elements tableEles = doc.select("#full-specifications table tbody tr");
+        for (Element ele : tableEles)
+        {
+            if (ele.text().contains("UPC"))
+            {
+                matchingItems.put("upc", ele.text().replace("UPC ", ""));
+                break;
+            }
+        }
+        System.out.println(matchingItems.get("upc"));
         doc.empty();
         return matchingItems;
     }
@@ -108,6 +124,11 @@ public class SearchHandler
             System.out.println("Error");
         }
         return new Document(" Failed ");
+    }
+
+    public String bestBuySpecsFormatter(String orgURL)
+    {
+        return orgURL.split("\\?")[0] + ";template=_specificationsTab";
     }
 
     public boolean amazonReady(String url, boolean havePrice)
