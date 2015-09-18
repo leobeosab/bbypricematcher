@@ -138,11 +138,12 @@ public class SearchActivity extends ActionBarActivity
         {
             if (bbyInf != null)
             {
-                amazon = search.searchAmazon(search.jSoupDoc, bbyInf.get("upc"),bbyInf);
+                amazon = search.searchAmazon(search.jSoupDoc, bbyInf.get("upc"), bbyInf);
             }
             else
             {
                 amazon = new ArrayList<>();
+                amazon.add("What");
                 Toast.makeText(getBaseContext(), "Error, amazon search called before best buy", Toast.LENGTH_LONG).show();
             }
             return null;
@@ -153,11 +154,11 @@ public class SearchActivity extends ActionBarActivity
             // Set title into TextView
             if (amazon.size() >= 1)
             {
-                amazonView.setText("Price Match Available:\nYes\nPrice: "+amazon.get(0));
+                amazonView.setText("Price Match Available: Yes\nPrice: "+amazon.get(0));
             }
             else
             {
-                amazonView.setText("Price Match Available:\nNo\nPrice: "+amazon.get(0));
+                amazonView.setText("Price Match Available: No\nPrice: Product not sold on Amazon");
             }
             Toast.makeText(getBaseContext(), "Amazon, done", Toast.LENGTH_LONG).show();
         }
