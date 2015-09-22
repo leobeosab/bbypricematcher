@@ -2,15 +2,15 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin"
-                android:paddingBottom="@dimen/activity_vertical_margin"
                 tools:context=".SearchActivity">
 
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
         android:id="@+id/scrollView">
 
         <LinearLayout
@@ -35,10 +35,29 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Item"
+                android:id="@+id/item"
+                android:gravity="center_horizontal"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#000000"
+               />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="0.2dp"
+                android:id="@+id/separator_top"
+                android:visibility="visible"
+                android:background="@android:color/darker_gray"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp" />
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="51dp"
-                android:layout_below="@+id/bestbuylogo"
+                android:layout_below="@+id/separator_top"
                 android:layout_alignRight="@+id/scrollView"
                 android:layout_alignEnd="@+id/scrollView"
                 android:id="@+id/price_match_section">
@@ -47,43 +66,102 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Price Match Availble: YES"
-                    android:id="@+id/textView2"
+                    android:text="Price Match Availble: NO"
+                    android:id="@+id/price_match_avail"
                     android:textColor="#ff000000"
-                    style="@style/AppTheme"
                     android:gravity="center_horizontal"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Seller: NewEgg.com   Price: $145.99"
-                    android:id="@+id/textView3"
+                    android:text="Seller: N/a    Price: N/a"
+                    android:id="@+id/lowest_seller"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
                     android:gravity="center_horizontal"/>
 
             </RelativeLayout>
-
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="0.2dp"
+                android:id="@+id/separator"
+                android:visibility="visible"
+                android:background="@android:color/darker_gray"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="Best Buy"
+                android:id="@+id/bbyheader"
+                android:gravity="center_horizontal"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Price Match Available:\n \nPrice: \n"
-                android:id="@+id/amazon_view"
-                android:layout_below="@+id/imageView2"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"/>
-
+                android:layout_marginBottom="5dp"
+                />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Name:\n \nModel Number:\n \nPrice:\n "
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Available:  Price:"
                 android:id="@+id/best_buy_view"
-                android:layout_below="@+id/imageView2"
+                android:layout_below="@+id/bbyheader"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Amazon"
+                android:id="@+id/amazon_header"
+                android:gravity="center_horizontal"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_marginBottom="5dp"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Available:  Price:"
+                android:id="@+id/amazon_view"
+                android:layout_below="@+id/amazon_header"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Newegg"
+                android:id="@+id/newegg_header"
+                android:gravity="center_horizontal"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_marginBottom="5dp"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Available:  Price:"
+                android:id="@+id/newegg_view"
+                android:layout_below="@+id/newegg_header"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+            </RelativeLayout>
 
         </LinearLayout>
     </ScrollView>

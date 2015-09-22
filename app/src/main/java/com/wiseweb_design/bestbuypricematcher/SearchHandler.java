@@ -30,9 +30,6 @@ public class SearchHandler
     {
         String url = "http://www.bestbuy.com/site/searchpage.jsp?st=" + sku + "&_dyncharset=UTF-8&id=pcat17071&type=page&sc=Global&cp=1&nrp=15&sp=&qp=&list=n&iht=y&usc=All+Categories&ks=960&keys=keys";
         bestBuyInformation = initialBestBuyScan(jSoupDoc, url);
-        System.out.println("Name: " + bestBuyInformation.get("title"));
-        System.out.println("Model Number: " + bestBuyInformation.get("modelNumber"));
-        System.out.println("Price: " + bestBuyInformation.get("price"));
     }
 
     public HashMap<String, String> initialBestBuyScan(Document doc, String url)
@@ -57,8 +54,12 @@ public class SearchHandler
                 break;
             }
         }
-        System.out.println(matchingItems.get("upc"));
+        if (tableEles.size() < 1)
+            matchingItems.put("GoodSKU", "false");
+        else
+            matchingItems.put("GoodSKU", "true");
         doc.empty();
+
         return matchingItems;
     }
 
@@ -93,9 +94,9 @@ public class SearchHandler
                 price = ele.select("span.a-size-base").text().split(" ")[0];
             } else if (price.contains("$"))
             {
-                amazonPrice = Double.parseDouble(price.replace("$", ""));
+                amazonPrice = Double.parseDouble(price.replace("$", "").replace(",", ""));
             }
-            if (price.contains("$") && (name.toLowerCase().matches(".*\\b" + Pattern.quote(searchTerm.toLowerCase()) + "\\b.*") || titleMatch(trim(bestBuyInfo.get("title"), " ", false, true), trim(name, " ", false, true))) && amazonReady(ele.select(".a-link-normal").attr("href"), true))
+            if (price.contains("$") && amazonReady(ele.select(".a-link-normal").attr("href"), true))
             {
                 matchingList.add(price);
                 System.out.println("yes");
@@ -104,6 +105,37 @@ public class SearchHandler
                 System.out.println("no");
         }
         return matchingList;
+    }
+
+    public String searchNewEgg(Document doc, String searchTerm, HashMap<String, String> bestBuyInfo)
+    {
+        String url = "http://www.newegg.com/Product/ProductList.aspx?Submit=ENE&N=8000%204814%20%20-1&IsNodeId=1&Description="+searchTerm+"&bop=And";
+        doc = jsoupConnect(url);
+        Elements items = doc.select(".itemCell");
+        String finalPrice = "";
+        double priceDouble = 999999999;
+        for (Element ele : items)
+        {
+            String price;
+            System.out.println(price = (ele.select(".itemAction input").attr("value")));
+            if (price != "")
+            {
+                double temp = cleanDouble(price);
+                if (temp < priceDouble)
+                {
+                    priceDouble = temp;
+                }
+            }
+        }
+        if (priceDouble != 999999999)
+            finalPrice = "$"+priceDouble;
+        return finalPrice;
+
+    }
+
+    public double cleanDouble(String doubleString)
+    {
+        return Double.parseDouble(doubleString.replace("$","").replace(",",""));
     }
 
     // TODO To Come: TigerDirect, possibly others
