@@ -63,6 +63,7 @@ public class SearchActivity extends ActionBarActivity
             {
                 SearchViewCompat.setInputType(searchView, InputType.TYPE_CLASS_NUMBER);
                 searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener()
+
                 {
                     @Override
                     public boolean onQueryTextSubmit(String query)
@@ -243,7 +244,7 @@ public class SearchActivity extends ActionBarActivity
                         priceMatchAvail.setText("Price Match Available: YES");
                         priceMatchAvailTrue = true;
                     }
-            }
+                }
             }
             else
             {
@@ -251,6 +252,6 @@ public class SearchActivity extends ActionBarActivity
             }
             Toast.makeText(getBaseContext(), "Newegg.com, done", Toast.LENGTH_LONG).show();
         }
-    }
+      }
 
 }

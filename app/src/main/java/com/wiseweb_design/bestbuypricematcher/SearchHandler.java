@@ -144,11 +144,12 @@ public class SearchHandler
         {
             String price = "";
             Element priceEle = ele.select(".item-price-container .price").first();
-            price += priceEle.select(".sup").first().text();
+           /* price += priceEle.select(".sup").first().text();
             price += priceEle.text() + ".";
-            price += priceEle.select("sup").last().text();
+            price += priceEle.select("sup").last().text(); */
+            price = priceEle.text();
             System.out.println(price);
-            if (price != "")
+            if (!price.equals(""))
             {
                 double temp = cleanDouble(price);
                 if (temp < priceDouble)
@@ -226,7 +227,7 @@ public class SearchHandler
         {
             for (String compWord : titleFromComp)
             {
-                if (bbyWord.toLowerCase().equals(compWord.toLowerCase()))
+                if (bbyWord.toLowerCase().equals(compWord.toLowerCase()))x
                     wordCount++;
             }
         }
