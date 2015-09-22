@@ -133,6 +133,36 @@ public class SearchHandler
 
     }
 
+    public String searchWallmart(Document doc, String searchTerm, HashMap<String, String> bestBuyInfo)
+    {
+        String url = "http://www.walmart.com/search/?query="+searchTerm;
+        doc = jsoupConnect(url);
+        Elements items = doc.select(".tile-container");
+        String finalPrice = "";
+        double priceDouble = 999999999;
+        for (Element ele : items)
+        {
+            String price = "";
+            Element priceEle = ele.select(".item-price-container .price").first();
+            price += priceEle.select(".sup").first().text();
+            price += priceEle.text() + ".";
+            price += priceEle.select("sup").last().text();
+            System.out.println(price);
+            if (price != "")
+            {
+                double temp = cleanDouble(price);
+                if (temp < priceDouble)
+                {
+                    priceDouble = temp;
+                }
+            }
+        }
+        if (priceDouble != 999999999)
+            finalPrice = "$"+priceDouble;
+        return finalPrice;
+
+    }
+
     public double cleanDouble(String doubleString)
     {
         return Double.parseDouble(doubleString.replace("$","").replace(",",""));

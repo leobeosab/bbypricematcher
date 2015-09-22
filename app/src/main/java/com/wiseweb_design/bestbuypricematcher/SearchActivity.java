@@ -218,7 +218,7 @@ public class SearchActivity extends ActionBarActivity
         {
             if (bbyInf != null)
             {
-                newegg = search.searchNewEgg(search.jSoupDoc, bbyInf.get("upc"), bbyInf);
+                newegg = search.searchWallmart(search.jSoupDoc, bbyInf.get("upc"), bbyInf);
             }
             else
             {
