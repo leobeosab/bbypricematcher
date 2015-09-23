@@ -1,6 +1,5 @@
 package com.wiseweb_design.bestbuypricematcher;
 
-import android.app.Activity;
 import android.os.AsyncTask;
 import android.support.v4.widget.SearchViewCompat;
 import android.support.v7.app.ActionBarActivity;
@@ -12,10 +11,8 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-
-import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -27,9 +24,11 @@ public class SearchActivity extends ActionBarActivity
     TextView bestBuyView;
     TextView amazonView;
     TextView neweggView;
+    TextView wallmartView;
     TextView priceMatchAvail;
     TextView sellingInformation;
     TextView item;
+    NumberFormat doubleFormatter;
     boolean priceMatchAvailTrue;
     String lowestSeller;
     double lowestPrice;
@@ -42,8 +41,10 @@ public class SearchActivity extends ActionBarActivity
         bestBuyView = (TextView) findViewById(R.id.best_buy_view);
         amazonView = (TextView) findViewById(R.id.amazon_view);
         neweggView = (TextView) findViewById(R.id.newegg_view);
+        wallmartView = (TextView) findViewById(R.id.wallmart_view);
         priceMatchAvail = (TextView) findViewById(R.id.price_match_avail);
         sellingInformation = (TextView) findViewById(R.id.lowest_seller);
+        doubleFormatter = new DecimalFormat("#0.00");
         item = (TextView) findViewById(R.id.item);
         lowestSeller = "BestBuy";
         lowestPrice = 0.0;
@@ -115,7 +116,8 @@ public class SearchActivity extends ActionBarActivity
     }
     public void setSellerInfo(String seller, String price)
     {
-        sellingInformation.setText("Seller: " + (lowestSeller = seller) + " Price: $" + (lowestPrice = Double.parseDouble(price.replace("$", "").replace(",",""))));
+        lowestPrice = Double.parseDouble(price.replace("$", "").replace(",",""));
+        sellingInformation.setText("Seller: " + (lowestSeller = seller) + " Price: $" +doubleFormatter.format(lowestPrice));
     }
     // Title AsyncTask
     private class searchSku extends AsyncTask<Void, Void, Void>
@@ -172,7 +174,7 @@ public class SearchActivity extends ActionBarActivity
         else
             {
                 amazon = new ArrayList<>();
-                amazon.add("What");
+                amazon.add("Error");
                 Toast.makeText(getBaseContext(), "Error, amazon search called before best buy", Toast.LENGTH_SHORT).show();
             }
             return null;
@@ -219,7 +221,7 @@ public class SearchActivity extends ActionBarActivity
         {
             if (bbyInf != null)
             {
-                newegg = search.searchWallmart(search.jSoupDoc, bbyInf.get("upc"), bbyInf);
+                newegg = search.searchNewEgg(search.jSoupDoc, bbyInf.get("upc"), bbyInf);
             }
             else
             {
@@ -251,7 +253,58 @@ public class SearchActivity extends ActionBarActivity
                 neweggView.setText("Available: Not available  Price: N/A");
             }
             Toast.makeText(getBaseContext(), "Newegg.com, done", Toast.LENGTH_LONG).show();
+            new searchWallmart().execute();
         }
       }
+
+    private class searchWallmart extends AsyncTask<Void, Void, Void>
+    {
+        String wallmart;
+        @Override
+        protected void onPreExecute()
+        {
+
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params)
+        {
+            if (bbyInf != null)
+            {
+                wallmart = search.searchWallmart(search.jSoupDoc, bbyInf.get("upc"), bbyInf);
+            }
+            else
+            {
+                wallmart = "Error";
+                Toast.makeText(getBaseContext(), "Error, amazon search called before best buy", Toast.LENGTH_LONG).show();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            // Set title into TextView
+            if (!wallmart.equals(""))
+            {
+                wallmartView.setText("Available: Yes  Price: "+wallmart);
+                double wallmartPrice;
+                if ( (wallmartPrice = Double.parseDouble(wallmart.replace("$","").replace(",",""))) < lowestPrice)
+                {
+                    setSellerInfo("Newegg.com", wallmart);
+                    if (!priceMatchAvailTrue)
+                    {
+                        priceMatchAvail.setText("Price Match Available: YES");
+                        priceMatchAvailTrue = true;
+                    }
+                }
+            }
+            else
+            {
+               wallmartView.setText("Available: Not available  Price: N/A");
+            }
+            Toast.makeText(getBaseContext(), "Wallmart.com, done", Toast.LENGTH_LONG).show();
+        }
+    }
 
 }

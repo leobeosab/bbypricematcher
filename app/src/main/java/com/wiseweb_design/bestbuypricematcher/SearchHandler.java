@@ -227,7 +227,7 @@ public class SearchHandler
         {
             for (String compWord : titleFromComp)
             {
-                if (bbyWord.toLowerCase().equals(compWord.toLowerCase()))x
+                if (bbyWord.toLowerCase().equals(compWord.toLowerCase()))
                     wordCount++;
             }
         }
